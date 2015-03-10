@@ -2,10 +2,27 @@ var gl;
 var points;
 var x = 0;
 var y = 0;
+var time = 1;
+var score = 0;
+
 window.onload = function init(){
+  //window size to make the game screen fit
+  var window_w = window.innerWidth;
+  var window_h = window.innerHeight;
+
+  //timer init
+  var timer = document.getElementById("timer");
+  timer.style.left = window_w/2 + 50 + "px";
+  setInterval("updateTime()", 1000);
+
+  //moving score under the time
+  var score_board = document.getElementById("score");
+  score_board.style.left = window_w/2 + 50 + "px"
+
+  //webgl stuff
   var canvas = document.getElementById( "gl-canvas" );
-  canvas.width = window.innerWidth/2;
-  canvas.height = window.innerHeight - 40;
+  canvas.width = window_w/2;
+  canvas.height = window_h - 40;
 
   gl = WebGLUtils.setupWebGL( canvas );
   if ( !gl ) { alert( "WebGL isn't available" ); }
@@ -53,6 +70,15 @@ window.onload = function init(){
       x, y-0.2,
       x+0.1, y-0.05
     ]);
+
+    var shape2 = new Float32Array([
+      x, y,
+      x-0.1, y-0.15,
+      x+0.1, y-0.15,
+      x, y-0.2,
+      x+0.1, y-0.05
+    ]);
+
     // Load the data into the GPU
     var bufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
@@ -68,6 +94,15 @@ window.onload = function init(){
 };
 
 function render() {
+  var score_board = document.getElementById("score");
+  score_board.innerHTML = "<p>Score: " + score + "</p>";
+  score++;
   gl.clear( gl.COLOR_BUFFER_BIT );
   gl.drawArrays( gl.TRIANGLE_FAN, 0, 4 );
+}
+
+function updateTime() {
+  var timer = document.getElementById("timer");
+  timer.innerHTML = "<p>Time: " + time + "</p>";
+  time++;
 }

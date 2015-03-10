@@ -1,6 +1,17 @@
 <!DOCTYPE HTML>
 <html>
   <head>
+    <style>
+      .time {
+        position: absolute;
+        left: 50px;
+      }
+      .score {
+        position: absolute;
+        top: 30px;
+        left: 50px;
+      }
+    </style>
     <script id="vertex-shader" type="x-shader/x-vertex">
       attribute vec4 vPosition;
 
@@ -24,6 +35,9 @@
     <script type="text/javascript" src="project1.js"></script>
   </head>
   <body>
+    <div id="timer" class="time"><p>Time: 0</p></div>
+    <div id="score" class="score"><p>Score: 0</p></div>
+
     <canvas id="gl-canvas" width="512" height="512">
     Oops ... your browser doesn't support the HTML5 canvas element
     </canvas>
