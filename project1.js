@@ -18,6 +18,20 @@ vec3(-2,-2,10),
 vec3(-2,-2,10)
 ];
 
+var verticesSizes = new Float32Array([
+0,0,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10
+]);
+
 var program;
 var bufferId;
 var vPosition;
@@ -113,6 +127,7 @@ transY += 0.01;
 if(on[3] == 1){
 transY -= 0.01;
 }
+
 if(transX > 0.9)
 transX = 0.9;
 if(transX < -0.9)
@@ -121,11 +136,9 @@ if(transY > 0.9)
 transY = 0.9;
 if(transY < -0.9)
 transY = -0.9;
-vertices = [
-vec2( -0.1 + transX, -0.1 + transY),
-vec2( -0.1 + transX, 0.1 + transY),
-vec2( 0.1 + transX, 0.1 + transY),
-vec2( 0.1 + transX, -0.1 + transY)];
+
+
+
 if (has_lost()) { newGame(); }
 // bufferId = gl.createBuffer();
 // gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
@@ -134,19 +147,24 @@ if (has_lost()) { newGame(); }
 // gl.vertexAttribPointer( vPosition, 2, gl.FLOAT, false, 0, 0 );
 // gl.enableVertexAttribArray( vPosition );
 
-var verticesSizes = new Float32Array([
-// Coordinate and size of points
-transX, transY, 10.0, // the 1st point
-//pointsArray[0][0], pointsArray[0][1], 20.0, // the 2nd point
-0.5, -0.4, 30.0, // the 3rd point
+//varticesSizes.prototype.indexOf(0) = transX;
+//varticesSizes.prototype.indexOf(1) = transY;
+verticesSizes[0] = transX;
+verticesSizes[1] = transY;
 
-0.5, -0.5, 30.0, // the 3rd point
-0.8, 0.0, 40.0, // the fourth
-1.0, 1.0, 50 // ...
-]);
+//var verticesSizes = new Float32Array([
+// Coordinate and size of points
+//transX, transY, 10.0, // the 1st point
+//pointsArray[0][0], pointsArray[0][1], 20.0, // the 2nd point
+//0.5, -0.4, 30.0, // the 3rd point
+
+//0.5, -0.5, 30.0, // the 3rd point
+//0.8, 0.0, 40.0, // the fourth
+//1.0, 1.0, 50 // ...
+//]);
 
 //var n2 = 5; // The number of vertices
-n = 5;
+n = 11;
 // Create a buffer object
 var vertexSizeBuffer = gl.createBuffer();
 if (!vertexSizeBuffer) {
