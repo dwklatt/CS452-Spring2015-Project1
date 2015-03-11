@@ -18,6 +18,20 @@ var verticesSizes = new Float32Array([
 	-2,-2,10
 ]);
 
+var verticesSizes = new Float32Array([
+0,0,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10
+]);
+
 var program;
 var bufferId;
 var vPosition;
@@ -102,7 +116,8 @@ function newGame() {
 	timer_interval = setInterval("updateTime()", 1000);
 	render_interval = setInterval(toRender, 10);
 }
-//Going to be collision detection
+
+//Collision detection
 function hasLost() {	
   for(var i = 3; i < verticesSizes.length; i+=3){
 		var xdiff = verticesSizes[0] - verticesSizes[i];
@@ -124,64 +139,60 @@ timer.innerHTML = "<p>Time: " + time + "</p>";
 time++;
 }
 function toRender(){
-	if(on[0] == 1){
-		transX -= 0.01;
-	}
-	if(on[1] == 1){
-		transX += 0.01;
-	}
-	if(on[2] == 1){
-		transY += 0.01;
-	}
-	if(on[3] == 1){
-		transY -= 0.01;
-	}
-	if(transX > 0.9)
-		transX = 0.9;
-	if(transX < -0.9)
-		transX = -0.9;
-	if(transY > 0.9)
-		transY = 0.9;
-	if(transY < -0.9)
-		transY = -0.9;
-	vertices = [
-		vec2( -0.1 + transX, -0.1 + transY),
-		vec2( -0.1 + transX, 0.1 + transY),
-		vec2( 0.1 + transX, 0.1 + transY),
-		vec2( 0.1 + transX, -0.1 + transY)];
-		
-	verticesSizes[0] = transX;
-	verticesSizes[1] = transY;
-	
-	//var n2 = 5; // The number of vertices
-	n = 5;
-	// Create a buffer object
-	var vertexSizeBuffer = gl.createBuffer();
-	if (!vertexSizeBuffer) {
-		console.log('Failed to create the buffer object');
-	}
-	// Bind the buffer object to target
-	gl.bindBuffer(gl.ARRAY_BUFFER, vertexSizeBuffer);
-	gl.bufferData(gl.ARRAY_BUFFER, verticesSizes, gl.STATIC_DRAW);
-	var FSIZE = verticesSizes.BYTES_PER_ELEMENT;
-	//Get the storage location of a_Position, assign and enable buffer
-	var vPosition = gl.getAttribLocation(program, 'vPosition');
-	if (vPosition < 0) {
-		console.log('Failed to get the storage location of vPosition');
-	}
-	gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, FSIZE * 3, 0);
-	gl.enableVertexAttribArray(vPosition); // Enable the assignment of the buffer object
-	// Get the storage location of a_PointSize
-	var a_PointSize = gl.getAttribLocation(program, 'a_PointSize');
-	if(a_PointSize < 0) {
-		console.log('Failed to get the storage location of a_PointSize');
-	}
-	gl.vertexAttribPointer(a_PointSize, 1, gl.FLOAT, false, FSIZE * 3, FSIZE * 2);
-	gl.enableVertexAttribArray(a_PointSize); // Enable buffer allocation
-	// Unbind the buffer object
-	gl.bindBuffer(gl.ARRAY_BUFFER, null);
-  if (hasLost()) { newGame(); }
-	render();
+if(on[0] == 1){
+transX -= 0.01;
+}
+if(on[1] == 1){
+transX += 0.01;
+}
+if(on[2] == 1){
+transY += 0.01;
+}
+if(on[3] == 1){
+transY -= 0.01;
+}
+
+if(transX > 0.9)
+transX = 0.9;
+if(transX < -0.9)
+transX = -0.9;
+if(transY > 0.9)
+transY = 0.9;
+if(transY < -0.9)
+transY = -0.9;
+
+if (hasLost()) { newGame(); }
+
+verticesSizes[0] = transX;
+verticesSizes[1] = transY;
+
+n = 11;
+// Create a buffer object
+var vertexSizeBuffer = gl.createBuffer();
+if (!vertexSizeBuffer) {
+console.log('Failed to create the buffer object');
+}
+// Bind the buffer object to target
+gl.bindBuffer(gl.ARRAY_BUFFER, vertexSizeBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, verticesSizes, gl.STATIC_DRAW);
+var FSIZE = verticesSizes.BYTES_PER_ELEMENT;
+//Get the storage location of a_Position, assign and enable buffer
+var vPosition = gl.getAttribLocation(program, 'vPosition');
+if (vPosition < 0) {
+console.log('Failed to get the storage location of vPosition');
+}
+gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, FSIZE * 3, 0);
+gl.enableVertexAttribArray(vPosition); // Enable the assignment of the buffer object
+// Get the storage location of a_PointSize
+var a_PointSize = gl.getAttribLocation(program, 'a_PointSize');
+if(a_PointSize < 0) {
+console.log('Failed to get the storage location of a_PointSize');
+}
+gl.vertexAttribPointer(a_PointSize, 1, gl.FLOAT, false, FSIZE * 3, FSIZE * 2);
+gl.enableVertexAttribArray(a_PointSize); // Enable buffer allocation
+// Unbind the buffer object
+gl.bindBuffer(gl.ARRAY_BUFFER, null);
+render();
 }
 function keypressed(event) {
 if(event.keyCode == '65')
