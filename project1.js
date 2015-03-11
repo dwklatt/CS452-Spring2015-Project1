@@ -62,15 +62,15 @@ window.onload = function init(){
   gl.clearColor( 0.0, 1.0, 0.0, 1.0 );
 
   // Load shaders and initialize attribute buffers
-  var program = initShaders( gl, "vertex-shader", "fragment-shader" );
+  program = initShaders( gl, "vertex-shader", "fragment-shader" );
   gl.useProgram( program );
   
   // Load the data into the GPU
-  var bufferId = gl.createBuffer();
+  bufferId = gl.createBuffer();
   gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
   gl.bufferData( gl.ARRAY_BUFFER, flatten(pointsArray), gl.STATIC_DRAW );
   // Associate our shader variables with our data buffer
-  var vPosition = gl.getAttribLocation( program, "vPosition" );
+  vPosition = gl.getAttribLocation( program, "vPosition" );
   gl.vertexAttribPointer( vPosition, 2, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( vPosition );
   // Load the data into the GPU
@@ -86,7 +86,6 @@ window.onload = function init(){
 	//render every 50 ms
 	setInterval(toRender, 50);
   if (hasLost()) { newGame(); }
-  };
 };
 
 function toRender(){
