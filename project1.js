@@ -1,4 +1,4 @@
-var gl;
+	var gl;
 var points;
 var transX = 0.0;
 var transY = 0.0;
@@ -108,11 +108,7 @@ timer_interval = setInterval("updateTime()", 1000);
 function hasLost() {
 return false;
 }
-function updateScore() {
-var score_board = document.getElementById("score");
-score_board.innerHTML = "<p>Score: " + score + "</p>";
-score++;
-}
+
 function updateTime() {
 var timer = document.getElementById("timer");
 timer.innerHTML = "<p>Time: " + time + "</p>";
@@ -144,8 +140,7 @@ vec2( -0.1 + transX, -0.1 + transY),
 vec2( -0.1 + transX, 0.1 + transY),
 vec2( 0.1 + transX, 0.1 + transY),
 vec2( 0.1 + transX, -0.1 + transY)];
-if (!has_lost()) { updateScore(); }
-else { newGame(); }
+if (has_lost()) { newGame(); }
 // bufferId = gl.createBuffer();
 // gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
 // gl.bufferData( gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW );
