@@ -4,12 +4,17 @@
     <style>
       .time {
         position: absolute;
-        left: 50px;
+        left: 500px;
       }
       .score {
         position: absolute;
         top: 30px;
-        left: 50px;
+        left: 500px;
+      }
+      .high_score {
+        position: absolute;
+        top: 60px;
+        left: 500px;
       }
     </style>
     <script id="vertex-shader" type="x-shader/x-vertex">
@@ -37,6 +42,7 @@
   <body>
     <div id="timer" class="time"><p>Time: 0</p></div>
     <div id="score" class="score"><p>Score: 0</p></div>
+    <div id="high_score" class="high_score"><p>High Score: -</p><div>
 
     <canvas id="gl-canvas" width="512" height="512">
     Oops ... your browser doesn't support the HTML5 canvas element

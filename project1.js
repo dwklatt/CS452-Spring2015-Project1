@@ -4,20 +4,26 @@ var x = 0;
 var y = 0;
 var time = 1;
 var score = 0;
+var high_score = 0;
+var timer_interval;
 
 window.onload = function init(){
   //window size to make the game screen fit
   var window_w = window.innerWidth;
   var window_h = window.innerHeight;
 
-  //timer init
+  //timer init and moving the timer
   var timer = document.getElementById("timer");
   timer.style.left = window_w/2 + 50 + "px";
-  setInterval("updateTime()", 1000);
+  timer_interval = setInterval("updateTime()", 1000);
 
   //moving score under the time
   var score_board = document.getElementById("score");
   score_board.style.left = window_w/2 + 50 + "px"
+
+  //moving highscore under score
+  var high_score_board = document.getElementById("high_score");
+  high_score_board.style.left = window_w/2 + 50 + "px"
 
   //webgl stuff
   var canvas = document.getElementById( "gl-canvas" );
@@ -91,7 +97,8 @@ window.onload = function init(){
     // Associate our shader variables with our data buffer
     render();
     //not sure if this should go here or in render?
-    if (!has_lost()) { updateScore(); }
+    if (!hasLost()) { updateScore(); }
+    else { newGame(); }
   };
 };
 
@@ -100,8 +107,17 @@ function render() {
   gl.drawArrays( gl.TRIANGLE_FAN, 0, 4 );
 }
 
-//This will be where we check to see if the score should be updated
-function has_lost() {
+//Starts a new game
+function newGame() {
+  if (score > high_score) { high_score = score; }
+  score = 0;
+  clearInterval(timer_interval);
+  time = 0;
+  timer_interval = setInterval("updateTime()", 1000);
+}
+
+//Going to be collision detection
+function hasLost() {
   return false;
 }
 
