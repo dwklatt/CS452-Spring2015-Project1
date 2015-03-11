@@ -4,7 +4,6 @@ var x = 0;
 var y = 0;
 var time = 1;
 var score = 0;
-var high_score = 0;
 var timer_interval;
 
 window.onload = function init(){
@@ -20,10 +19,6 @@ window.onload = function init(){
   //moving score under the time
   var score_board = document.getElementById("score");
   score_board.style.left = window_w/2 + 50 + "px"
-
-  //moving highscore under score
-  var high_score_board = document.getElementById("high_score");
-  high_score_board.style.left = window_w/2 + 50 + "px"
 
   //webgl stuff
   var canvas = document.getElementById( "gl-canvas" );
@@ -97,8 +92,7 @@ window.onload = function init(){
     // Associate our shader variables with our data buffer
     render();
     //not sure if this should go here or in render?
-    if (!hasLost()) { updateScore(); }
-    else { newGame(); }
+    if (hasLost()) { newGame(); }
   };
 };
 
@@ -109,8 +103,7 @@ function render() {
 
 //Starts a new game
 function newGame() {
-  if (score > high_score) { high_score = score; }
-  score = 0;
+  if (time > score) { score = time; }
   clearInterval(timer_interval);
   time = 0;
   timer_interval = setInterval("updateTime()", 1000);
