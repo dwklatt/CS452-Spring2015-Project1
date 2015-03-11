@@ -131,13 +131,6 @@ function toRender(){
 		vec2( -0.1 + transX, 0.1 + transY),
 		vec2( 0.1 + transX, 0.1 + transY),
 		vec2( 0.1 + transX, -0.1 + transY)];
-	if (hasLost()) { newGame(); }
-	// bufferId = gl.createBuffer();
-	// gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
-	// gl.bufferData( gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW );
-	// vPosition = gl.getAttribLocation( program, 'vPosition' );
-	// gl.vertexAttribPointer( vPosition, 2, gl.FLOAT, false, 0, 0 );
-	// gl.enableVertexAttribArray( vPosition );
 	var verticesSizes = new Float32Array([
 		// Coordinate and size of points
 		transX, transY, 10.0, // the 1st point
@@ -173,6 +166,7 @@ function toRender(){
 	gl.enableVertexAttribArray(a_PointSize); // Enable buffer allocation
 	// Unbind the buffer object
 	gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  if (hasLost()) { newGame(); }
 	render();
 }
 function keypressed(event) {
