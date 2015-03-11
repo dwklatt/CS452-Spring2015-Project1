@@ -3,7 +3,21 @@ var points;
 var transX = 0.0;
 var transY = 0.0;
 var canvas;
-var pointsArray = [];
+
+var verticesSizes = new Float32Array([
+	0,0,10,
+	-.25,-.25,10,
+	.25,.25,10,
+	.5,-.5,10,
+	-2,-2,10,
+	-2,-2,10,
+	-2,-2,10,
+	-2,-2,10,
+	-2,-2,10,
+	-2,-2,10,
+	-2,-2,10
+]);
+
 var program;
 var bufferId;
 var vPosition;
@@ -11,99 +25,103 @@ var cBuffer;
 var vColor;
 var n = 0;
 var vertexColors = [
-	vec4( 0.0, 0.0, 0.0, 1.0 ), // black
-	vec4( 1.0, 0.0, 0.0, 1.0 ), // red
-	vec4( 1.0, 1.0, 0.0, 1.0 ), // yellow
-	vec4( 0.0, 0.0, 1.0, 1.0 ), // blue
-	vec4( 1.0, 0.0, 0.0, 1.0 ), // red
-	vec4( 1.0, 1.0, 0.0, 1.0 ), // yellow
-	vec4( 0.0, 0.0, 1.0, 1.0 ), // blue
-	vec4( 1.0, 0.0, 0.0, 1.0 ), // red
-	vec4( 1.0, 1.0, 0.0, 1.0 ), // yellow
-	vec4( 0.0, 0.0, 1.0, 1.0 ) // blue
+vec4( 0.0, 0.0, 0.0, 1.0 ), // black
+vec4( 1.0, 0.0, 0.0, 1.0 ), // red
+vec4( 1.0, 1.0, 0.0, 1.0 ), // yellow
+vec4( 0.0, 0.0, 1.0, 1.0 ), // blue
+vec4( 1.0, 0.0, 0.0, 1.0 ), // red
+vec4( 1.0, 1.0, 0.0, 1.0 ), // yellow
+vec4( 0.0, 0.0, 1.0, 1.0 ), // blue
+vec4( 1.0, 0.0, 0.0, 1.0 ), // red
+vec4( 1.0, 1.0, 0.0, 1.0 ), // yellow
+vec4( 0.0, 0.0, 1.0, 1.0 ), // blue
+vec4( 1.0, 0.0, 0.0, 1.0 ) // red
+
 ];
 var on = [0,0,0,0];
 var time = 1;
 var score = 0;
 var timer_interval;
+var render_interval;
 
 window.onload = function init()
 {
-	// window size to make the game screen fit
-	var window_w = window.innerWidth;
-	var window_h = window.innerHeight;
-	// timer init
-	var timer = document.getElementById("timer");
-	timer.style.left = window_w/2 + 50 + "px";
-	timer_interval = setInterval("updateTime()", 1000);
-	// moving score under the time
-	var score_board = document.getElementById("score");
-	score_board.style.left = window_w/2 + 50 + "px"
-	canvas = document.getElementById( "gl-canvas" );
-	// canvas.width = window_w/2;
-	//canvas.height = window_h - 40;
-	gl = WebGLUtils.setupWebGL( canvas );
-	if ( !gl ) { alert( "WebGL isn't available" ); }
-	pointsArray = [
-		vec2(-0.1, -0.1),
-		vec2(-0.1, 0.1),
-		vec2(0.1, 0.1),
-		vec2(0.1, -0.1)];
-	pointsArray2 = [
-		vec2(-0.4, -0.4),
-		vec2(-0.4, -0.2),
-		vec2(-0.2, -0.2),
-		vec2(-0.2, -0.4)];
-	document.onkeydown = keypressed;
-	document.onkeyup = kup;
-	//
-	// Configure WebGL
-	//
-	gl.viewport( 0, 0, canvas.width, canvas.height );
-	gl.clearColor( 0.0, 1.0, 0.0, 1.0 );
-	// Load shaders and initialize attribute buffers
-	program = initShaders( gl, "vertex-shader", "fragment-shader" );
-	gl.useProgram( program );
-	// Load the data into the GPU
-	bufferId = gl.createBuffer();
-	gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
-	gl.bufferData( gl.ARRAY_BUFFER, flatten(pointsArray), gl.STATIC_DRAW );
-	// Associate out shader variables with our data buffer
-	vPosition = gl.getAttribLocation( program, 'vPosition' );
-	gl.vertexAttribPointer( vPosition, 2, gl.FLOAT, false, 0, 0 );
-	gl.enableVertexAttribArray( vPosition );
-	cBuffer = gl.createBuffer();
-	gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
-	gl.bufferData( gl.ARRAY_BUFFER, flatten(vertexColors), gl.STATIC_DRAW );
-	vColor = gl.getAttribLocation( program, "vColor" );
-	gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
-	gl.enableVertexAttribArray( vColor );
-	setInterval(toRender, 10);
-	gl.clearColor(0.0, 1.0, 0.0, 1.0);
-	render();
-};
+// window size to make the game screen fit
+var window_w = window.innerWidth;
+var window_h = window.innerHeight;
+// timer init
+var timer = document.getElementById("timer");
+timer.style.left = window_w/2 + 50 + "px";
+timer_interval = setInterval("updateTime()", 1000);
+// moving score under the time
+var score_board = document.getElementById("score");
+score_board.style.left = window_w/2 + 50 + "px"
+canvas = document.getElementById( "gl-canvas" );
+// canvas.width = window_w/2;
+//canvas.height = window_h - 40;
+gl = WebGLUtils.setupWebGL( canvas );
+if ( !gl ) { alert( "WebGL isn't available" ); }
+document.onkeydown = keypressed;
+document.onkeyup = kup;
+//
+// Configure WebGL
+//
+gl.viewport( 0, 0, canvas.width, canvas.height );
+gl.clearColor( 0.0, 1.0, 0.0, 1.0 );
+// Load shaders and initialize attribute buffers
+program = initShaders( gl, "vertex-shader", "fragment-shader" );
+gl.useProgram( program );
+cBuffer = gl.createBuffer();
+gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
+gl.bufferData( gl.ARRAY_BUFFER, flatten(vertexColors), gl.STATIC_DRAW );
+vColor = gl.getAttribLocation( program, "vColor" );
+gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
+gl.enableVertexAttribArray( vColor );
 
+
+//render every 50 ms
+render_interval = setInterval(toRender, 10);
+};
 //Starts a new game
 function newGame() {
-	if (time > score) { score = time; }
-	clearInterval(timer_interval);
+	if (time > score) { 
+		score = time;
+		var highscore = document.getElementById("score");
+		highscore.innerHTML = "<p>High Score: " + score + "</p>"; 
+	}
 	time = 0;
+	verticesSizes[0] = 0;
+	verticesSizes[1] = 0;
+	transX = 0.0;
+	transY = 0.0;
+	on[0] = 0;
+	on[1] = 0;
+	on[2] = 0;
+	on[3] = 0;
+	//render();
 	timer_interval = setInterval("updateTime()", 1000);
+	render_interval = setInterval(toRender, 10);
 }
 //Going to be collision detection
-function hasLost() {
-  flag = false;
-  if (flag) { 
-    alert("Game Over!");
-    return true;
+function hasLost() {	
+  for(var i = 3; i < verticesSizes.length; i+=3){
+		var xdiff = verticesSizes[0] - verticesSizes[i];
+		var ydiff = verticesSizes[1] - verticesSizes[i+1];
+		if ((-0.0355 <= xdiff && xdiff <= 0) || (0 <= xdiff && xdiff <= 0.0355)) { 
+			if ((-0.0355 <= ydiff && ydiff <= 0) || (0 <= ydiff && ydiff <= 0.0355)) { 
+		  	clearInterval(render_interval);
+				clearInterval(timer_interval);
+		  	return true;
+		  }
+		}
   }
-	return false;
+  return false;
 }
 
 function updateTime() {
-	var timer = document.getElementById("timer");
-	timer.innerHTML = "<p>Time: " + time + "</p>";
-	time++;
+var timer = document.getElementById("timer");
+timer.innerHTML = "<p>Time: " + time + "</p>";
+time++;
 }
 function toRender(){
 	if(on[0] == 1){
@@ -131,14 +149,10 @@ function toRender(){
 		vec2( -0.1 + transX, 0.1 + transY),
 		vec2( 0.1 + transX, 0.1 + transY),
 		vec2( 0.1 + transX, -0.1 + transY)];
-	var verticesSizes = new Float32Array([
-		// Coordinate and size of points
-		transX, transY, 10.0, // the 1st point
-		-0.5, -0.5, 20.0, // the 2nd point
-		0.5, -0.5, 30.0, // the 3rd point
-		0.8, 0.0, 40.0, // the fourth
-		1.0, 1.0, 50 // ...
-	]);
+		
+	verticesSizes[0] = transX;
+	verticesSizes[1] = transY;
+	
 	//var n2 = 5; // The number of vertices
 	n = 5;
 	// Create a buffer object
@@ -170,24 +184,24 @@ function toRender(){
 	render();
 }
 function keypressed(event) {
-	if(event.keyCode == '65')
-		on[0] = 1;
-	else if(event.keyCode == '68')
-		on[1] = 1;
-	else if(event.keyCode == '87')
-		on[2] = 1;
-	else if(event.keyCode == '83')
-		on[3] = 1;
-	};
+if(event.keyCode == '65')
+on[0] = 1;
+else if(event.keyCode == '68')
+on[1] = 1;
+else if(event.keyCode == '87')
+on[2] = 1;
+else if(event.keyCode == '83')
+on[3] = 1;
+};
 function kup(event) {
-	if(event.keyCode == '65')
-		on[0] = 0;
-	else if(event.keyCode == '68')
-		on[1] = 0;
-	else if(event.keyCode == '87')
-		on[2] = 0;
-	else if(event.keyCode == '83')
-		on[3] = 0;
+if(event.keyCode == '65')
+on[0] = 0;
+else if(event.keyCode == '68')
+on[1] = 0;
+else if(event.keyCode == '87')
+on[2] = 0;
+else if(event.keyCode == '83')
+on[3] = 0;
 }
 function render() {
 	gl.clear(gl.COLOR_BUFFER_BIT);
