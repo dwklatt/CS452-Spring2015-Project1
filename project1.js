@@ -92,6 +92,11 @@ function newGame() {
 }
 //Going to be collision detection
 function hasLost() {
+  flag = false;
+  if (flag) { 
+    alert("Game Over!");
+    return true;
+  }
 	return false;
 }
 
