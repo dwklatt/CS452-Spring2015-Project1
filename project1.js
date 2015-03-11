@@ -90,15 +90,25 @@ window.onload = function init(){
     // Load the data into the GPU
     // Associate our shader variables with our data buffer
     render();
+    //not sure if this should go here or in render?
+    if (!has_lost()) { updateScore(); }
   };
 };
 
 function render() {
+  gl.clear( gl.COLOR_BUFFER_BIT );
+  gl.drawArrays( gl.TRIANGLE_FAN, 0, 4 );
+}
+
+//This will be where we check to see if the score should be updated
+function has_lost() {
+  return false;
+}
+
+function updateScore() {
   var score_board = document.getElementById("score");
   score_board.innerHTML = "<p>Score: " + score + "</p>";
   score++;
-  gl.clear( gl.COLOR_BUFFER_BIT );
-  gl.drawArrays( gl.TRIANGLE_FAN, 0, 4 );
 }
 
 function updateTime() {
