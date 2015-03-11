@@ -1,46 +1,46 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <style>
-      .time {
-        top: 0px;
-        position: absolute;
-      }
-      .score {
-        position: absolute;
-        top: 30px;
-      }
-    </style>
-    <script id="vertex-shader" type="x-shader/x-vertex">
-      attribute vec4 vPosition;
-      attribute vec4 vColor;
-      varying vec4 fColor;
-      void main()
-      {
-        gl_Position = vPosition;
-        fColor = vColor;
-      }
-    </script>
-
-    <script id="fragment-shader" type="x-shader/x-fragment">
-      precision mediump float;
-      varying vec4 fColor;
-      void main()
-      {
-        gl_FragColor = fColor;
-      }
-    </script>
-    <script type="text/javascript" src="../Common/webgl-utils.js"></script>
-    <script type="text/javascript" src="../Common/initShaders.js"></script>
-    <script type="text/javascript" src="../Common/MV.js"></script>
-    <script type="text/javascript" src="project1.js"></script>
-  </head>
-  <body>
-    <canvas id="gl-canvas" width="512" height="512">
-    Oops ... your browser doesn't support the HTML5 canvas element
-    </canvas>
-
-    <div id="timer" class="time"><p>Time: 0</p></div>
-    <div id="score" class="score"><p>High Score: 0</p><div>
-  </body>
+<head>
+<style>
+.time {
+top: 0px;
+position: absolute;
+}
+.score {
+position: absolute;
+top: 30px;
+}
+</style>
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec4 vPosition;
+attribute float a_PointSize;
+attribute vec4 vColor;
+varying vec4 fColor;
+void main()
+{
+gl_Position = vPosition;
+fColor = vColor;
+gl_PointSize = a_PointSize;
+}
+</script>
+<script id="fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+varying vec4 fColor;
+void main()
+{
+gl_FragColor = fColor;
+}
+</script>
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="project1.js"></script>
+</head>
+<body>
+<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<div id="timer" class="time"><p>Time: 0</p></div>
+<div id="score" class="score"><p>High Score: 0</p><div>
+</body>
 </html>
