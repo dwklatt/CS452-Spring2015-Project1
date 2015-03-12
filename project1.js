@@ -20,7 +20,7 @@ var blockSpeed = new Float32Array([
 ]);
 
 var verticesSizes = new Float32Array([
-0,0,30,
+0,0,10,
 -2,-2,10,
 -2,-2,10,
 -2,-2,10,
@@ -109,11 +109,13 @@ function newGame() {
 	time = 0;
 	verticesSizes[0] = 0;
 	verticesSizes[1] = 0;
+	verticesSizes[2] = 10;
   for(var i = 3; i < verticesSizes.length; i+=3){
     verticesSizes[i] = -2;
     verticesSizes[i+1] = -2;
     verticesSizes[i+2] = 10;
   }
+	
 	transX = 0.0;
 	transY = 0.0;
 	on[0] = 0;
@@ -150,6 +152,9 @@ function hasLost() {
 function updateTime() {
 var timer = document.getElementById("timer");
 timer.innerHTML = "<p>Time: " + time + "</p>";
+if(time%11 == 10){
+	verticesSizes[2] += 2;	
+}
 time++;
 }
 function toRender(){
@@ -245,15 +250,6 @@ function updateObjects(){
 		// if collision with a wall
 		if(verticesSizes[i] > 1.0-verticesSizes[i+2]/500 || verticesSizes[i] < -1.0+verticesSizes[i+2]/500 || verticesSizes[i+1] > 1.0-verticesSizes[i+2]/500 || verticesSizes[i+1] < -1.0+verticesSizes[i+2]/500)
 			makeNewObjects(i);
-		// }if(verticesSizes[i] < -1.0+verticesSizes[i+2]/500){
-			
-		// }
-		// if(verticesSizes[i+1] > 1.0-verticesSizes[i+2]/500){
-			
-		// }
-		// if(verticesSizes[i+1] < -1.0+verticesSizes[i+2]/500){
-			
-		// }
 		
 		//move object
 		verticesSizes[i] += blockSpeed[i];
