@@ -19,53 +19,11 @@ var blockSpeed = new Float32Array([
 0,0,0
 ]);
 
-var verticesSizes = new Float32Array([
+var verticesSizes = new Float32Array([ 
+//why did you add so many?
+//you didnt even add speed and color blocks to acomadtate for the growth
+//i did testing and was never going to grow object before 3 minutes at 4s intervals you had it at 11
 0,0,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
--2,-2,10,
 -2,-2,10,
 -2,-2,10,
 -2,-2,10,
@@ -99,7 +57,7 @@ vec4( 1.0, 0.0, 0.0, 1.0 ) // red
 
 ];
 var on = [0,0,0,0];
-var time = 1;
+var time = 0;
 var score = 0;
 var timer_interval;
 var render_interval;
@@ -147,13 +105,16 @@ render_interval = setInterval(toRender, 10);
 
 //Starts a new game
 function newGame() {
-	if (time > score) { 
-		score = time;
-		var highscore = document.getElementById("score");
-		highscore.innerHTML = "<p>High Score: " + score + "</p>"; 
-	}
+	// i threw this is updateTime
+	// if (time > score) { 
+		// score = time;
+		// var highscore = document.getElementById("score");
+		// highscore.innerHTML = "<p>High Score: " + score + "</p>"; 
+	// }
   //reseting everything to default
 	time = 0;
+	var timer = document.getElementById("timer");
+	timer.innerHTML = "<p>Time: " + time + "</p>";
 	verticesSizes[0] = 0;
 	verticesSizes[1] = 0;
 	verticesSizes[2] = 10;
@@ -200,14 +161,19 @@ function hasLost() {
 }
 
 function updateTime() {
+time++;
 var timer = document.getElementById("timer");
 timer.innerHTML = "<p>Time: " + time + "</p>";
-if(time%11 == 10){
+// verticesSizes[2] += 0.1; // way to easy 
+if(time%4 == 3){
 	if(difficulty * 3 < verticesSizes.length){ difficulty++; }
-	else { verticesSizes[2] += 2; }
-	console.log(difficulty*3, verticesSizes.length)
+	else { verticesSizes[2] += 0.3; }
+	//console.log(difficulty*3, verticesSizes.length)
 }
-time++;
+if(time > score){
+	score = time;
+	var highscore = document.getElementById("score");
+	highscore.innerHTML = "<p>High Score: " + score + "</p>"; }
 }
 function toRender(){
 if(on[0] == 1){
@@ -237,6 +203,9 @@ verticesSizes[1] = -1.0+verticesSizes[2]/500;
 updateObjects();
 
 if (hasLost()) { newGame(); }
+//developer hax
+
+
 
 //verticesSizes[0] = transX;
 //verticesSizes[1] = transY;
