@@ -5,20 +5,6 @@ var transY = 0.0;
 var canvas;
 
 var verticesSizes = new Float32Array([
-	0,0,10,
-	-.25,-.25,10,
-	.25,.25,10,
-	.5,-.5,10,
-	-2,-2,10,
-	-2,-2,10,
-	-2,-2,10,
-	-2,-2,10,
-	-2,-2,10,
-	-2,-2,10,
-	-2,-2,10
-]);
-
-var verticesSizes = new Float32Array([
 0,0,10,
 -2,-2,10,
 -2,-2,10,
