@@ -2,6 +2,12 @@
 <html>
 <head>
 <style>
+.button {
+  position:absolute;
+  visibility: hidden;
+  top: 256;
+  left: 256;
+}
 .time {
 top: 0px;
 position: absolute;
@@ -40,6 +46,7 @@ gl_FragColor = fColor;
 <canvas id="gl-canvas" width="512" height="512">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
+<button id="newGame" class="button" onclick="restart()">New Game</button> 
 <div id="timer" class="time"><p>Time: 0</p></div>
 <div id="score" class="score"><p>High Score: 0</p><div>
 </body>

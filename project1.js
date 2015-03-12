@@ -4,8 +4,23 @@ var transX = 0.0;
 var transY = 0.0;
 var canvas;
 
+var blockSpeed = new Float32Array([ 
+// thrid bit in each row does nothing other than make array comparison easier blockSpeed[index * 2 / 3 + 1]
+0,0,0, // player	
+0,0,0, 
+0,0,0, 
+0,0,0, 
+0,0,0, 
+0,0,0, 
+0,0,0, 
+0,0,0, 
+0,0,0, 
+0,0,0, 
+0,0,0
+]);
+
 var verticesSizes = new Float32Array([
-0,0,10,
+0,0,30,
 -2,-2,10,
 -2,-2,10,
 -2,-2,10,
@@ -82,6 +97,7 @@ gl.enableVertexAttribArray( vColor );
 //render every 50 ms
 render_interval = setInterval(toRender, 10);
 };
+
 //Starts a new game
 function newGame() {
 	if (time > score) { 
@@ -89,16 +105,28 @@ function newGame() {
 		var highscore = document.getElementById("score");
 		highscore.innerHTML = "<p>High Score: " + score + "</p>"; 
 	}
+  //reseting everything to default
 	time = 0;
 	verticesSizes[0] = 0;
 	verticesSizes[1] = 0;
+  for(var i = 3; i < verticesSizes.length; i+=3){
+    verticesSizes[i] = -2;
+    verticesSizes[i+1] = -2;
+    verticesSizes[i+2] = 10;
+  }
 	transX = 0.0;
 	transY = 0.0;
 	on[0] = 0;
 	on[1] = 0;
 	on[2] = 0;
 	on[3] = 0;
-	//render();
+  var button = document.getElementById("newGame");
+  button.style.visibility = "visible";
+}
+
+function restart() {
+  var button = document.getElementById("newGame");
+  button.style.visibility = "hidden";
 	timer_interval = setInterval("updateTime()", 1000);
 	render_interval = setInterval(toRender, 10);
 }
@@ -126,31 +154,35 @@ time++;
 }
 function toRender(){
 if(on[0] == 1){
-transX -= 0.01;
+verticesSizes[0] -= 0.01;
 }
 if(on[1] == 1){
-transX += 0.01;
+verticesSizes[0] += 0.01;
 }
 if(on[2] == 1){
-transY += 0.01;
+verticesSizes[1] += 0.01;
 }
 if(on[3] == 1){
-transY -= 0.01;
+verticesSizes[1] -= 0.01;
 }
 
-if(transX > 0.9)
-transX = 0.9;
-if(transX < -0.9)
-transX = -0.9;
-if(transY > 0.9)
-transY = 0.9;
-if(transY < -0.9)
-transY = -0.9;
+//detect player hitting wall
+if(verticesSizes[0] > 1.0-verticesSizes[2]/500)
+verticesSizes[0] = 1.0-verticesSizes[2]/500;
+if(verticesSizes[0] < -1.0+verticesSizes[2]/500)
+verticesSizes[0] = -1.0+verticesSizes[2]/500;
+if(verticesSizes[1] > 1.0-verticesSizes[2]/500)
+verticesSizes[1] = 1.0-verticesSizes[2]/500;
+if(verticesSizes[1] < -1.0+verticesSizes[2]/500)
+verticesSizes[1] = -1.0+verticesSizes[2]/500;
+
+//other wall collision
+updateObjects();
 
 if (hasLost()) { newGame(); }
 
-verticesSizes[0] = transX;
-verticesSizes[1] = transY;
+//verticesSizes[0] = transX;
+//verticesSizes[1] = transY;
 
 n = 11;
 // Create a buffer object
@@ -204,4 +236,56 @@ function render() {
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	// Draw three points
 	gl.drawArrays(gl.POINTS, 0, n);
+}
+
+
+function updateObjects(){
+	
+	for(i = 3; i < 33; i +=3){
+		// if collision with a wall
+		if(verticesSizes[i] > 1.0-verticesSizes[i+2]/500 || verticesSizes[i] < -1.0+verticesSizes[i+2]/500 || verticesSizes[i+1] > 1.0-verticesSizes[i+2]/500 || verticesSizes[i+1] < -1.0+verticesSizes[i+2]/500)
+			makeNewObjects(i);
+		// }if(verticesSizes[i] < -1.0+verticesSizes[i+2]/500){
+			
+		// }
+		// if(verticesSizes[i+1] > 1.0-verticesSizes[i+2]/500){
+			
+		// }
+		// if(verticesSizes[i+1] < -1.0+verticesSizes[i+2]/500){
+			
+		// }
+		
+		//move object
+		verticesSizes[i] += blockSpeed[i];
+		verticesSizes[i+1] += blockSpeed[i+1];
+
+	}
+	
+}
+
+function makeNewObjects(index){
+	// 0-1 + (0 or -1)
+	var wall = Math.floor(Math.random() * 4); // 0-3
+	if(wall == 0){
+		verticesSizes[index] = Math.random() * 2 - 1;
+		verticesSizes[index + 1] = 1.0-verticesSizes[i+2]/500; // top wall
+		blockSpeed[index] = 0;
+		blockSpeed[index + 1] = -0.01; // move down	
+	}else if(wall == 1){
+		verticesSizes[index] = Math.random() * 2 - 1;
+		verticesSizes[index + 1] = -1.0+verticesSizes[i+2]/500 // bottom wall
+		blockSpeed[index] = 0;
+		blockSpeed[index + 1] = 0.01; // move up	
+	}else if(wall == 2){
+		verticesSizes[index] = 1.0-verticesSizes[i+2]/500; //right wall
+		verticesSizes[index + 1] = Math.random() * 2 - 1;
+		blockSpeed[index] = -0.01; // move left	
+		blockSpeed[index+1] = 0;
+	}else if(wall == 3){
+		verticesSizes[index] = -1.0+verticesSizes[i+2]/500; //left wall
+		verticesSizes[index + 1] = Math.random() * 2 - 1;
+		blockSpeed[index] = 0.01; // move right	
+		blockSpeed[index+1] = 0;
+
+	}
 }
