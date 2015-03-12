@@ -20,6 +20,22 @@ var blockSpeed = new Float32Array([
 0,0,0
 ]);
 
+/*
+var verticesSizes = [
+vec3(0,0,10),
+vec3-2,-2,10),
+vec3(-2,-2,10),
+vec3(-2,-2,10),
+vec3(-2,-2,10),
+vec3(-2,-2,10),
+vec3(-2,-2,10),
+vec3(-2,-2,10),
+vec3(-2,-2,10),
+vec3(-2,-2,10),
+vec3(-2,-2,10)
+];
+*/
+
 var verticesSizes = new Float32Array([ 
 //why did you add so many?
 //you didnt even add speed and color blocks to acomadtate for the growth
@@ -284,26 +300,28 @@ function updateObjects(){
 function makeNewObjects(index){
 	// 0-1 + (0 or -1)
 	var wall = Math.floor(Math.random() * 4); // 0-3
+  var randomPlace = Math.random() * 2 - 1;
+  var direction = 0.01 * Math.pow(-1, Math.round(Math.random() * 2)) * Math.round(randomPlace);
 	if(wall == 0){
-		verticesSizes[index] = Math.random() * 2 - 1;
+		verticesSizes[index] = randomPlace;
 		verticesSizes[index + 1] = 1.0-verticesSizes[i+2]/500; // top wall
-		blockSpeed[index] = 0;
+		blockSpeed[index] = direction; //might move diagonal
 		blockSpeed[index + 1] = -0.01; // move down	
 	}else if(wall == 1){
-		verticesSizes[index] = Math.random() * 2 - 1;
+		verticesSizes[index] = randomPlace;
 		verticesSizes[index + 1] = -1.0+verticesSizes[i+2]/500 // bottom wall
-		blockSpeed[index] = 0;
+		blockSpeed[index] = direction;
 		blockSpeed[index + 1] = 0.01; // move up	
 	}else if(wall == 2){
 		verticesSizes[index] = 1.0-verticesSizes[i+2]/500; //right wall
-		verticesSizes[index + 1] = Math.random() * 2 - 1;
+		verticesSizes[index + 1] = randomPlace;
 		blockSpeed[index] = -0.01; // move left	
-		blockSpeed[index+1] = 0;
+		blockSpeed[index+1] = direction;
 	}else if(wall == 3){
 		verticesSizes[index] = -1.0+verticesSizes[i+2]/500; //left wall
-		verticesSizes[index + 1] = Math.random() * 2 - 1;
+		verticesSizes[index + 1] = randomPlace;
 		blockSpeed[index] = 0.01; // move right	
-		blockSpeed[index+1] = 0;
+		blockSpeed[index+1] = direction;
 
 	}
 }
