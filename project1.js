@@ -1,3 +1,4 @@
+//Derek Klatt and Sean Obyrne
 var gl;
 var points;
 var transX = 0.0;

@@ -1,3 +1,3 @@
-name, date, description
-
-be sure to include complete details of how to interact with your game, the scoring system, and how to win
+Derek Klatt and Sean Obyrne
+3/12/15
+Basic game where you control the black square and dodge all the other moving squares.  The game gets harder as time goes on and more and more cubes are added and then your cube starts to grow.  There isn't a way too win except surving for as long as possible.  Once you collide if another square the game ends and displays your highest score.  Score is equal to the time survived in seconds.
