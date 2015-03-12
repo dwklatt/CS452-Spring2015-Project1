@@ -30,6 +30,51 @@ var verticesSizes = new Float32Array([
 -2,-2,10,
 -2,-2,10,
 -2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
+-2,-2,10,
 -2,-2,10
 ]);
 
@@ -58,6 +103,8 @@ var time = 1;
 var score = 0;
 var timer_interval;
 var render_interval;
+
+var difficulty = 1;
 
 window.onload = function init()
 {
@@ -122,6 +169,9 @@ function newGame() {
 	on[1] = 0;
 	on[2] = 0;
 	on[3] = 0;
+	
+	difficulty = 1;
+	
   var button = document.getElementById("newGame");
   button.style.visibility = "visible";
 }
@@ -153,7 +203,9 @@ function updateTime() {
 var timer = document.getElementById("timer");
 timer.innerHTML = "<p>Time: " + time + "</p>";
 if(time%11 == 10){
-	verticesSizes[2] += 2;	
+	if(difficulty * 3 < verticesSizes.length){ difficulty++; }
+	else { verticesSizes[2] += 2; }
+	console.log(difficulty*3, verticesSizes.length)
 }
 time++;
 }
@@ -246,7 +298,7 @@ function render() {
 
 function updateObjects(){
 	
-	for(i = 3; i < 33; i +=3){
+	for(i = 3; i < difficulty * 3 + 1; i +=3){
 		// if collision with a wall
 		if(verticesSizes[i] > 1.0-verticesSizes[i+2]/500 || verticesSizes[i] < -1.0+verticesSizes[i+2]/500 || verticesSizes[i+1] > 1.0-verticesSizes[i+2]/500 || verticesSizes[i+1] < -1.0+verticesSizes[i+2]/500)
 			makeNewObjects(i);
